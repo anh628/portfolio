@@ -1,0 +1,571 @@
+from pathlib import Path html = r'''<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anh Tran — Full-Stack Software Engineer</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --card: #111827;
+        --text: #e8edf7;
+        --muted: #9aa7bd;
+        --border: #263247;
+        --accent: #67e8f9;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.6;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      a:hover {
+        color: var(--accent);
+      }
+      .wrap {
+        max-width: 1080px;
+        margin: auto;
+        padding: 0 24px;
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        color: var(--accent);
+        font-size: 0.78rem;
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: rgba(11, 16, 32, 0.94);
+        backdrop-filter: blur(10px);
+        z-index: 5;
+      }
+      .navlinks {
+        display: flex;
+        gap: 24px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .toggle {
+        border: 1px solid var(--border);
+        background: none;
+        color: var(--muted);
+        padding: 8px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .hero {
+        padding: 90px 0 80px;
+        display: grid;
+        grid-template-columns: 1.35fr 0.65fr;
+        gap: 48px;
+        align-items: center;
+      }
+      .hero h1 {
+        font-size: clamp(2.7rem, 6vw, 5rem);
+        line-height: 1.02;
+        letter-spacing: -0.045em;
+        margin: 10px 0 24px;
+      }
+      .hero p {
+        color: var(--muted);
+        max-width: 700px;
+      }
+      .buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+      }
+      .btn {
+        padding: 12px 20px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        font-weight: 600;
+      }
+      .primary {
+        background: var(--accent);
+        color: #07131a;
+        border-color: var(--accent);
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 26px;
+        transition: 0.25s;
+      }
+      .card:hover {
+        transform: translateY(-3px);
+        border-color: #40516d;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 20px;
+      }
+      .tag {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 10px;
+        color: var(--muted);
+        font-size: 0.75rem;
+      }
+      .section {
+        padding: 64px 0;
+        border-top: 1px solid var(--border);
+      }
+      h2 {
+        font-size: 2rem;
+        margin: 8px 0 30px;
+      }
+      h3 {
+        margin: 0;
+      }
+      .about {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 32px;
+      }
+      .headshot {
+        width: 160px;
+        height: 160px;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+
+      .headshot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .timeline {
+        display: grid;
+        gap: 34px;
+      }
+      .role {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        gap: 24px;
+      }
+      .date {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .role ul {
+        margin: 10px 0 0;
+        padding-left: 20px;
+        color: var(--muted);
+      }
+      .projects {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .project-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .project p,
+      .experience p {
+        color: var(--muted);
+      }
+      .skills {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 28px;
+      }
+      .skills p,
+      .additional p,
+      .edu p {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .additional {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+      .contact h2 {
+        font-size: 2.5rem;
+        max-width: 650px;
+      }
+      .footer {
+        padding: 28px 0;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      @media (max-width: 760px) {
+        .navlinks {
+          display: none;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          padding: 64px 0;
+        }
+        .about,
+        .role {
+          grid-template-columns: 1fr;
+        }
+        .headshot {
+          width: 130px;
+          height: 130px;
+        }
+        .projects,
+        .additional {
+          grid-template-columns: 1fr;
+        }
+        .skills {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer {
+          gap: 12px;
+          flex-direction: column;
+        }
+      }
+      @media (max-width: 450px) {
+        .wrap {
+          padding: 0 18px;
+        }
+        .skills {
+          grid-template-columns: 1fr;
+        }
+        .hero h1 {
+          font-size: 2.7rem;
+        }
+      }
+      .light {
+        --bg: #f7f9fc;
+        --card: #fff;
+        --text: #172033;
+        --muted: #5d6b82;
+        --border: #d9e0eb;
+        --accent: #0891b2;
+      }
+      .light .nav {
+        background: rgba(247, 249, 252, 0.94);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="nav">
+        <a href="#top"><strong>Anh Tran</strong></a>
+        <nav class="navlinks">
+          <a href="#experience">Experience</a><a href="#work">Projects</a
+          ><a href="#contact">Contact</a>
+        </nav>
+        <button class="toggle" id="theme">Light mode</button>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div>
+            <div class="mono">Full-Stack Software Engineer</div>
+            <h1>Building software that makes a difference for people</h1>
+            <p>
+              I build thoughtful full-stack applications across frontend,
+              backend, and data—with a focus on useful products and the people
+              who rely on them.
+            </p>
+            <div class="buttons">
+              <a class="btn primary" href="#work">View My Work</a
+              ><a class="btn" href="#contact">Get in Touch</a>
+            </div>
+            <div class="buttons" style="margin-top: 20px">
+              <a href="https://github.com/anh628" target="_blank">GitHub ↗</a
+              ><a
+                href="https://www.linkedin.com/in/anh-tran628/"
+                target="_blank"
+                >LinkedIn ↗</a
+              ><a href="mailto:anh.tran628@gmail.com">Email ↗</a>
+            </div>
+            <div class="mono" style="color: var(--muted); margin-top: 22px">
+              5+ years building production software
+            </div>
+          </div>
+          <div class="card">
+            <div class="mono">currently</div>
+            <p>
+              Exploring new applications and looking for my next full-time
+              engineering role.
+            </p>
+            <div class="tags">
+              <span class="tag">React</span><span class="tag">JavaScript</span
+              ><span class="tag">Node.js</span
+              ><span class="tag">PostgreSQL</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="about">
+          <div class="about">
+            <div class="headshot">
+              <img src="assets/profile.jpeg" alt="profile" />
+            </div>
+            <div>
+              <div class="mono">01 / About</div>
+              <h2>Engineering with a people-first perspective.</h2>
+              <p style="color: var(--muted); max-width: 760px">
+                I’m a full-stack software engineer who enjoys turning real
+                problems into useful software. My background in education shaped
+                how I think about users, collaboration, and building technology
+                that works for the people using it.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="experience">
+          <div class="mono">02 / Experience</div>
+          <h2>Experience</h2>
+          <div class="timeline">
+            <div class="role">
+              <div class="date">Oct 2020 – Apr 2025</div>
+              <div>
+                <h3>Junior Software Developer · 9 Dots</h3>
+                <ul>
+                  <li>
+                    Designed and implemented 20+ RESTful APIs with Node.js and
+                    Express for production applications serving thousands of
+                    active users.
+                  </li>
+                  <li>
+                    Built full-stack features across React, Redux, Node.js, and
+                    PostgreSQL, including teacher and admin dashboards.
+                  </li>
+                  <li>
+                    Collaborated across requirements, implementation, testing,
+                    debugging, CI/CD, and production troubleshooting.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="role">
+              <div class="date">Jul 2019 – Sep 2020</div>
+              <div>
+                <h3>Software Apprentice · 9 Dots</h3>
+                <ul>
+                  <li>
+                    Developed modular React components and backend services
+                    using Express and Firebase.
+                  </li>
+                  <li>
+                    Supported API development, integrations, debugging, and
+                    testing alongside software developers.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="role">
+              <div class="date">Jun 2018 – Jun 2019</div>
+              <div>
+                <h3>CS Fellow · 9 Dots</h3>
+                <ul>
+                  <li>
+                    Delivered computer science curriculum in K–6 classrooms,
+                    emphasizing problem-solving and inclusive access to
+                    technology.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="work">
+          <div class="mono">03 / Featured Work</div>
+          <h2>Featured Work</h2>
+          <div class="projects">
+            <article class="card">
+              <div class="project-top">
+                <div>
+                  <div class="mono">AI / Full Stack</div>
+                  <h3>AI Teacher Lesson Generator</h3>
+                </div>
+                <a href="https://github.com/anh628/ai-teacher" target="_blank"
+                  >GitHub ↗</a
+                >
+              </div>
+              <p>
+                A full-stack AI application that helps teachers generate
+                customized lesson plans from a topic, grade level, and learning
+                objectives.
+              </p>
+              <p>
+                The project explores prompt design, structured LLM output,
+                validation, automated testing, and a teacher review workflow. It
+                uses Ollama for local LLM inference.
+              </p>
+              <div class="tags">
+                <span class="tag">React</span><span class="tag">TypeScript</span
+                ><span class="tag">Node.js</span
+                ><span class="tag">PostgreSQL</span
+                ><span class="tag">Ollama</span>
+              </div>
+            </article>
+            <article class="card">
+              <div class="mono">Product / Education</div>
+              <h3>Teacher Dashboard MVP</h3>
+              <p>
+                A React-based dashboard built to support early classroom user
+                testing and give teachers more control over student activity.
+              </p>
+              <p>
+                I built features including pausing and unpausing student screens
+                and viewing individual puzzles. Working with classroom users
+                helped shape the workflow and clarify which teacher controls
+                were most useful.
+              </p>
+              <div class="tags">
+                <span class="tag">React</span><span class="tag">JavaScript</span
+                ><span class="tag">Redux</span><span class="tag">Node.js</span
+                ><span class="tag">PostgreSQL</span>
+              </div>
+            </article>
+            <article class="card">
+              <div class="mono">Education / Game</div>
+              <h3>Rewriters - Educational Game</h3>
+              <p>
+                An educational game designed to help students practice logic
+                through puzzles, navigation, and interactive challenges.
+              </p>
+              <p>
+                As part of a four-person team, I contributed across game logic,
+                puzzle pathing/navigation, and character customization. We
+                tested with teachers and students and incorporated what we
+                learned into the product.
+              </p>
+              <div class="tags">
+                <span class="tag">Phaser.js</span><span class="tag">React</span
+                ><span class="tag">Redux</span><span class="tag">Firebase</span
+                ><span class="tag">Firestore</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="mono">04 / Skills</div>
+          <h2>Technical Skills</h2>
+          <div class="skills">
+            <div>
+              <h3>Frontend</h3>
+              <p>
+                JavaScript · React · Redux · TypeScript · HTML/CSS · Ant Design
+                · Material UI · Phaser.js
+              </p>
+            </div>
+            <div>
+              <h3>Backend</h3>
+              <p>Node.js · Express · REST APIs</p>
+            </div>
+            <div>
+              <h3>Database</h3>
+              <p>SQL · PostgreSQL · Firebase · Firestore</p>
+            </div>
+            <div>
+              <h3>Tools</h3>
+              <p>
+                Git · GitHub Actions · Jest · CI/CD · Automated Testing · Code
+                Reviews
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="mono">05 / Additional Experience</div>
+          <div class="additional">
+            <div>
+              <h3>Software Contributor · Hack for LA</h3>
+              <p>
+                Refactored React UI logic with an emphasis on maintainability,
+                accessibility, code quality, WCAG practices, and cross-browser
+                compatibility.
+              </p>
+            </div>
+            <div>
+              <h3>English Education Volunteer · Peace Corps, Thailand</h3>
+              <p>
+                Led classroom and community education programs while developing
+                adaptable communication and leadership skills.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section edu">
+          <div class="mono">Education</div>
+          <h3 style="margin-top: 8px">UCLA</h3>
+          <p>
+            B.S. Mathematical Economics · Specialization in Computing · Minor in
+            Environmental Systems and Society
+          </p>
+        </section>
+
+        <section class="section contact" id="contact">
+          <div class="mono">06 / Contact</div>
+          <h2>Let’s build something meaningful.</h2>
+          <p style="color: var(--muted)">
+            Open to full-time software engineering opportunities.
+          </p>
+          <div class="buttons">
+            <a class="btn primary" href="mailto:anh.tran628@gmail.com"
+              >anh.tran628@gmail.com</a
+            ><a class="btn" href="https://github.com/anh628" target="_blank"
+              >GitHub ↗</a
+            ><a
+              class="btn"
+              href="https://www.linkedin.com/in/anh-tran628/"
+              target="_blank"
+              >LinkedIn ↗</a
+            >
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© Anh Tran</span><a href="#top">Back to top ↑</a>
+      </footer>
+    </div>
+    <script>
+      const btn = document.getElementById("theme");
+      btn.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+        btn.textContent = document.body.classList.contains("light")
+          ? "Dark mode"
+          : "Light mode";
+      });
+    </script>
+  </body>
+</html>
+
